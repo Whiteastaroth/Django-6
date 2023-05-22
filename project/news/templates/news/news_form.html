@@ -1,0 +1,10 @@
+{% extends 'default.html' %}
+
+{% block content %}
+  <h2>Редактирование новости</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Обновить</button>
+  </form>
+{% endblock %}

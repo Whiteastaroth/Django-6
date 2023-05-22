@@ -1,0 +1,43 @@
+{% extends 'default.html' %}
+
+{% block content %}
+    {% if news %}
+        <h1>Статьи</h1>
+        {% if perms.news.add_new %}
+        <a href="{% url 'articles_create' %}">Создание статьи</a>
+        {% endif %}
+        <ul>
+            {% for new in news %}
+                <li><a href="{% url 'detail' new.pk %}">{{ new.title }}</a>
+                    {% if perms.news.change_new %}
+                    <a href="{% url 'articles_edit' new.pk %}">Редактирование статьи</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>К сожалению, статей в данной категории нет.</p>
+    {% endif %}
+{% endblock %}
+
+{% block pagination %}
+ <nav aria-label="Pagination">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+        {% endif %}
+        {% for num in page_range %}
+            <li class="page-item{% if page_obj.number == num %} active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo; Last</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
